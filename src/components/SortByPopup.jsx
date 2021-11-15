@@ -1,17 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const SortByPopup = ({ items, activeSortType, onClickSortType }) => {
+const SortByPopup = React.memo(({ items, activeSortType, onClickSortType }) => {
   const [activePopup, setActivePopup] = React.useState(false);
   const sortBy = React.useRef();
-  const activeLabel = items.find(obj => obj.type === activeSortType).name;
+  const activeLabel = items.find((obj) => obj.type === activeSortType).name;
 
   const toggleActivePopup = () => {
     setActivePopup(!activePopup);
   };
 
-  const clickOutsidePopup = (e) => {
-    if (!e.path.includes(sortBy.current)) {
+  const clickOutsidePopup = (event) => {
+    const path = event.path || (event.composedPath && event.composedPath());
+    if (!path.includes(sortBy.current)) {
       setActivePopup(false);
     }
   };
@@ -62,7 +63,7 @@ const SortByPopup = ({ items, activeSortType, onClickSortType }) => {
       )}
     </div>
   );
-};
+});
 
 SortByPopup.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -72,6 +73,6 @@ SortByPopup.propTypes = {
 
 SortByPopup.defaultProps = {
   items: [],
-}
+};
 
 export default SortByPopup;
